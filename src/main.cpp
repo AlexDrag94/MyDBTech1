@@ -168,20 +168,67 @@ int evaluatorBench(std::string &graphFile, std::string &queriesFile) {
 
 
 int main(int argc, char *argv[]) {
+    auto g = std::make_shared<SimpleGraph>();
+    auto est = std::make_shared<SimpleEstimator>(g);
+    auto ev = std::make_unique<SimpleEvaluator>(g);
+    ev->attachEstimator(est);
+    g->setNoVertices(10);
+    g->setNoLabels(10);
+    g->addEdge(1, 2, 0);
+    g->addEdge(2, 3, 1);
+    g->addEdge(3, 4, 0);
+    g->addEdge(4, 5, 3);
+    g->addEdge(5, 6, 0);
 
-    if(argc < 3) {
-        std::cout << "Usage: quicksilver <graphFile> <queriesFile>" << std::endl;
-        return 0;
+    std::cout<<"Graph"<<std::endl;
+    for(uint32_t i = 0; i < g->getNoLabels(); i ++) {
+        for(uint32_t j = 0; j < g->adj[i].size(); j ++) {
+            std::cout<<i<<": "<<g->adj[i][j].first<<", "<<g->adj[i][j].second<<std::endl;
+        }
     }
 
-    // args
-    std::string graphFile {argv[1]};
-    std::string queriesFile {argv[2]};
+    auto p1 = std::make_shared<std::vector<std::pair<uint32_t, uint32_t>>>();
+    auto p2 = std::make_shared<std::vector<std::pair<uint32_t, uint32_t>>>();
 
-//    estimatorBench(graphFile, queriesFile);
-    evaluatorBench(graphFile, queriesFile);
+    p1->emplace_back(std::make_pair(1, 2));
+    p2->emplace_back(std::make_pair(2, 4));
+    p2->emplace_back(std::make_pair(2, 4));
+    p2->emplace_back(std::make_pair(2, 5));
 
-    return 0;
+    std::cout<<"Projection 1"<<std::endl;
+
+    for(uint32_t i = 0; i < p1->size(); i ++) {
+        std::cout<<p1->at(i).first<<", "<<p1->at(i).second<<std::endl;
+    }
+
+    std::cout<<"Projection 2"<<std::endl;
+
+    for(uint32_t i = 0; i < p2->size(); i ++) {
+        std::cout<<p2->at(i).first<<", "<<p2->at(i).second<<std::endl;
+    }
+
+    auto join = SimpleEvaluator::join(p1, p2);
+    std::cout<<"Join"<<std::endl;
+
+    for(uint32_t i = 0; i < join->size(); i ++) {
+        std::cout<<join->at(i).first<<", "<<join->at(i).second<<std::endl;
+    }
+    auto result = SimpleEvaluator::computeStats(join);
+    std::cout<<"Results"<<std::endl<<result.noIn<<", "<<result.noOut<<", "<<result.noPaths<<std::endl;
+
+//    if(argc < 3) {
+//        std::cout << "Usage: quicksilver <graphFile> <queriesFile>" << std::endl;
+//        return 0;
+//    }
+//
+//    // args
+//    std::string graphFile {argv[1]};
+//    std::string queriesFile {argv[2]};
+//
+////    estimatorBench(graphFile, queriesFile);
+//    evaluatorBench(graphFile, queriesFile);
+//
+//    return 0;
 }
 
 
