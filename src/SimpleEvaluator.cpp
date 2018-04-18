@@ -112,6 +112,8 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join
             }
         }
     }
+    std::sort(out->begin(), out->end());
+    out->erase( unique( out->begin(), out->end() ), out->end() );
     return out;
 }
 
