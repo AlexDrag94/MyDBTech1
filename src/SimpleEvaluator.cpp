@@ -95,16 +95,22 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join
             pos[right->at(j).first] = j;
     }
 
-    uint32_t check = 0;
     for(uint32_t i = 0; i < left->size(); i ++) {
         for(uint32_t j = pos[left->at(i).second]; j < right->size(); j ++) {
-            check ++;
-            if(left->at(i).second == right->at(j).first && !(left->at(i).first == out->back().first && right->at(j).second == out->back().second))
-                out->emplace_back(left->at(i).first, right->at(j).second);
-            else break;
+            if(out->size() == 0) {
+                if(left->at(i).second == right->at(j).first)
+                    out->emplace_back(left->at(i).first, right->at(j).second);
+                else break;
+            }
+            else {
+                if (left->at(i).second != right->at(j).first) {
+                    break;
+                }
+                else if(left->at(i).first != out->back().first || right->at(j).second != out->back().second)
+                    out->emplace_back(left->at(i).first, right->at(j).second);
+            }
         }
     }
-    std::cout<<"Checks: "<<check<<std::endl;
     return out;
 }
 
