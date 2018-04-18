@@ -82,7 +82,6 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join
 
     auto out = std::make_shared<std::vector<std::pair<uint32_t,uint32_t>>>();
 
-    std::sort(left->begin(), left->end(), SimpleGraph::sortPairsSecond);
     std::sort(right->begin(), right->end(), SimpleGraph::sortPairsFirst);
     std::vector<uint32_t> pos;
     pos.resize(right->back().first + 1);
@@ -112,6 +111,7 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join
             }
         }
     }
+
     std::sort(out->begin(), out->end());
     out->erase( unique( out->begin(), out->end() ), out->end() );
     return out;
