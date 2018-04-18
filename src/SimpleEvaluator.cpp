@@ -27,41 +27,33 @@ void SimpleEvaluator::prepare() {
 
 cardStat SimpleEvaluator::computeStats(std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &g) {
 
-//    cardStat stats {};
-//
-//    uint32_t last = 0;
-//
-//    std::sort(g->begin(), g->end(), SimpleGraph::sortPairsSecond);
-//    for(uint32_t i = 0; i < g->size(); i ++) {
-//        if(i == 0 || g->at(i).second != last) {
-//            stats.noIn++;
-//        }
-//
-//        last = g->at(i).second;
-//    }
-//
-//    std::sort(g->begin(), g->end(), SimpleGraph::sortPairsFirst);
-//    uint32_t prevFrom = 0;
-//    uint32_t prevTo = 0;
-//    bool first = true;
-//
-//    for(uint32_t i = 0; i < g->size(); i ++) {
-//        if (first || !(prevFrom == g->at(i).first && prevTo == g->at(i).second)) {
-//            first = false;
-//            stats.noPaths ++;
-//            prevFrom = g->at(i).first;
-//            prevTo = g->at(i).second;
-//        }
-//
-//        if(i == 0 || g->at(i).first != last) {
-//            stats.noOut++;
-//        }
-//
-//        last = g->at(i).first;
-//    }
+    cardStat stats {};
 
+    uint32_t last = 0;
 
-    return {0, g->size(), 0};
+    std::sort(g->begin(), g->end(), SimpleGraph::sortPairsSecond);
+    for(uint32_t i = 0; i < g->size(); i ++) {
+        if(i == 0 || g->at(i).second != last) {
+            stats.noIn++;
+        }
+
+        last = g->at(i).second;
+    }
+
+    std::sort(g->begin(), g->end(), SimpleGraph::sortPairsFirst);
+
+    for(uint32_t i = 0; i < g->size(); i ++) {
+
+        if(i == 0 || g->at(i).first != last) {
+            stats.noOut++;
+        }
+
+        last = g->at(i).first;
+    }
+
+    stats.noPaths = g->size();
+
+    return stats;
 }
 
 std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::project(uint32_t projectLabel, bool inverse, std::shared_ptr<SimpleGraph> &in) {
