@@ -86,20 +86,28 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join
 
     std::sort(left->begin(), left->end(), SimpleGraph::sortPairsSecond);
     std::sort(right->begin(), right->end(), SimpleGraph::sortPairsFirst);
+    std::vector<uint32_t> pos;
+    pos.resize(right->back().first);
 
-    uint32_t start = 0;
+    for(uint32_t i = 0; i < pos.size(); i ++) {
+        pos[i] = right->size();
+    }
+
+    for(uint32_t j = 0; j < right->size(); j ++) {
+        if(j < pos[right->at(j).first])
+            pos[right->at(j).first] = j;
+    }
+
+    uint32_t check = 0;
     for(uint32_t i = 0; i < left->size(); i ++) {
-        for(uint32_t j = start; j < right->size(); j ++) {
-
-            if(left->at(i).second > right->at(j).first) {
-                start = j + 1;
-            }
-            else if(left->at(i).second == right->at(j).first)
+        for(uint32_t j = pos[left->at(i).second]; j < right->size(); j ++) {
+            check ++;
+            if(left->at(i).second == right->at(j).first)
                 out->emplace_back(left->at(i).first, right->at(j).second);
             else break;
         }
     }
-
+    std::cout<<"Checks: "<<check<<std::endl;
     return out;
 }
 

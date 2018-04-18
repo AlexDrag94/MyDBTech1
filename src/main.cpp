@@ -185,6 +185,10 @@ int main(int argc, char *argv[]) {
 //    g->addEdge(2, 8, 1);
 //    g->addEdge(9, 8, 1);
 //
+//    g->addEdge(1, 3, 1);
+//    g->addEdge(1, 4, 1);
+//    g->addEdge(1, 5, 1);
+//
 //    g->addEdge(2, 4, 5);
 //    g->addEdge(2, 5, 6);
 //    g->addEdge(3, 4, 3);
@@ -198,6 +202,9 @@ int main(int argc, char *argv[]) {
 //
 //    auto p1 = SimpleEvaluator::project(0, false, g);
 //    auto p2 = SimpleEvaluator::project(1, false, g);
+//
+//    std::sort(p1->begin(),p1->end(), SimpleGraph::sortPairsSecond);
+//    std::sort(p2->begin(), p2->end(), SimpleGraph::sortPairsFirst);
 //
 //    std::cout<<"Projection 1"<<std::endl;
 //
