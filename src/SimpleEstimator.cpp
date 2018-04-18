@@ -28,6 +28,7 @@ void SimpleEstimator::prepare() {
     inPaths = new uint32_t*[numLabels];
     outPaths = new uint32_t*[numLabels];
     labelData = new cardStat[numLabels];
+
     for(auto i = 0; i < numLabels; i ++) {
         inPaths[i] = new uint32_t[numVertices];
         outPaths[i] = new uint32_t[numVertices];
@@ -37,16 +38,17 @@ void SimpleEstimator::prepare() {
         }
     }
 
-    for(auto i = 0; i < numVertices; i ++) {
+    for(auto i = 0; i < numLabels; i ++) {
         for(auto p: graph.get()->adj[i]) {
-            inPaths[p.first][i] ++;
-            outPaths[p.first][p.second] ++;
+            inPaths[i][p.second] ++;
+            outPaths[i][p.first] ++;
         }
     }
 
     uint32_t numPaths = 0;
     uint32_t numIn = 0;
     uint32_t numOut = 0;
+
     for(auto i = 0; i < numLabels; i ++) {
         for(auto j = 0; j < numVertices; j ++) {
             numPaths += inPaths[i][j];
