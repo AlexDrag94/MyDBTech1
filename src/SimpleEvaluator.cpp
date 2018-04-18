@@ -33,7 +33,7 @@ cardStat SimpleEvaluator::computeStats(std::shared_ptr<std::vector<std::pair<uin
     std::sort(g->begin(), g->end(), SimpleGraph::sortPairsFirst);
     for(uint32_t i = 0; i < g->size(); i ++) {
         if(i == 0 || g->at(i).first != last) {
-            stats.noOut++;
+            stats.noIn++;
         }
 
         last = g->at(i).first;
@@ -42,7 +42,7 @@ cardStat SimpleEvaluator::computeStats(std::shared_ptr<std::vector<std::pair<uin
     std::sort(g->begin(), g->end(), SimpleGraph::sortPairsSecond);
     for(uint32_t i = 0; i < g->size(); i ++) {
         if(i == 0 || g->at(i).second != last) {
-            stats.noIn++;
+            stats.noOut++;
         }
 
         last = g->at(i).second;
