@@ -183,6 +183,11 @@ int main(int argc, char *argv[]) {
 //    g->addEdge(2, 4, 1);
 //    g->addEdge(2, 5, 1);
 //    g->addEdge(2, 8, 1);
+//    g->addEdge(9, 8, 1);
+//
+//    g->addEdge(2, 4, 5);
+//    g->addEdge(2, 5, 6);
+//    g->addEdge(3, 4, 3);
 //
 //    std::cout<<"Graph"<<std::endl;
 //    for(uint32_t i = 0; i < g->getNoLabels(); i ++) {
