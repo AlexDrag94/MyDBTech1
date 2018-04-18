@@ -87,7 +87,7 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join
     std::sort(left->begin(), left->end(), SimpleGraph::sortPairsSecond);
     std::sort(right->begin(), right->end(), SimpleGraph::sortPairsFirst);
     std::vector<uint32_t> pos;
-    pos.resize(right->back().first);
+    pos.resize(right->back().first + 1);
 
     for(uint32_t i = 0; i < pos.size(); i ++) {
         pos[i] = right->size();
