@@ -27,7 +27,7 @@ void SimpleEvaluator::prepare() {
 
 cardStat SimpleEvaluator::computeStats(std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &g) {
 
-    cardStat stats {};
+//    cardStat stats {};
 //
 //    uint32_t last = 0;
 //
@@ -61,7 +61,7 @@ cardStat SimpleEvaluator::computeStats(std::shared_ptr<std::vector<std::pair<uin
 //    }
 
 
-    return stats;
+    return {0, g->size(), 0};
 }
 
 std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::project(uint32_t projectLabel, bool inverse, std::shared_ptr<SimpleGraph> &in) {
@@ -99,7 +99,7 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join
     for(uint32_t i = 0; i < left->size(); i ++) {
         for(uint32_t j = pos[left->at(i).second]; j < right->size(); j ++) {
             check ++;
-            if(left->at(i).second == right->at(j).first)
+            if(left->at(i).second == right->at(j).first && !(left->at(i).first == out->back().first && right->at(j).second == out->back().second))
                 out->emplace_back(left->at(i).first, right->at(j).second);
             else break;
         }
