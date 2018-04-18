@@ -98,21 +98,13 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join
 
     for(uint32_t i = 0; i < left->size(); i ++) {
         for(uint32_t j = pos[left->at(i).second]; j < right->size(); j ++) {
-            if(out->size() == 0) {
-                if(left->at(i).second == right->at(j).first)
-                    out->emplace_back(left->at(i).first, right->at(j).second);
-                else break;
+            if(left->at(i).second == right->at(j).first) {
+                out->emplace_back(left->at(i).first, right->at(j).second);
             }
-            else {
-                if (left->at(i).second != right->at(j).first) {
-                    break;
-                }
-                else if(left->at(i).first != out->back().first || right->at(j).second != out->back().second)
-                    out->emplace_back(left->at(i).first, right->at(j).second);
-            }
+            else break;
         }
     }
-    std::sort(out->begin(), out->end());
+    //std::sort(out->begin(), out->end());
     out->erase( unique( out->begin(), out->end() ), out->end() );
     return out;
 }
