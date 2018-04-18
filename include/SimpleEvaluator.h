@@ -28,15 +28,15 @@ public:
 
     void attachEstimator(std::shared_ptr<SimpleEstimator> &e);
 
-    std::vector<std::pair> evaluate_aux(RPQTree *q);
-    static std::vector<std::pair> project(uint32_t label, bool inverse, std::shared_ptr<SimpleGraph> &g);
-    static std::vector<std::pair> join(std::vector<std::pair> &left, std::vector<std::pair> &right);
+    std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> evaluate_aux(RPQTree *q);
+    static std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> project(uint32_t label, bool inverse, std::shared_ptr<SimpleGraph> &g);
+    static std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> join(std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &left, std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &right);
 
     std::vector<RPQTree*> getLeaves(RPQTree *query);
     RPQTree* optimizeQuery(RPQTree *query);
 
 
-    static cardStat computeStats(std::vector<std::pair> &g);
+    static cardStat computeStats(std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &g);
 
 };
 

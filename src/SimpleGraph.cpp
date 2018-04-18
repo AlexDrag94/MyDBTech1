@@ -24,14 +24,14 @@ uint32_t SimpleGraph::getNoEdges() const {
 }
 
 // sort on the first item in the pair, then on the second (ascending order)
-static bool SimpleGraph::sortPairsFirst(const std::pair<uint32_t,uint32_t> &a, const std::pair<uint32_t,uint32_t> &b) {
+bool SimpleGraph::sortPairsFirst(const std::pair<uint32_t,uint32_t> &a, const std::pair<uint32_t,uint32_t> &b) {
     if (a.first < b.first) return true;
     if (a.first == b.first) return a.second < b.second;
     return false;
 }
 
 // sort on the second item in the pair, then on the first (ascending order)
-static bool SimpleGraph::sortPairsSecond(const std::pair<uint32_t,uint32_t> &a, const std::pair<uint32_t,uint32_t> &b) {
+bool SimpleGraph::sortPairsSecond(const std::pair<uint32_t,uint32_t> &a, const std::pair<uint32_t,uint32_t> &b) {
     if (a.second < b.second) return true;
     if (a.second == b.second) return a.first < b.first;
     return false;

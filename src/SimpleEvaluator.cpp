@@ -25,37 +25,37 @@ void SimpleEvaluator::prepare() {
 
 }
 
-cardStat SimpleEvaluator::computeStats(std::vector<std::pair> &g) {
+cardStat SimpleEvaluator::computeStats(std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &g) {
 
     cardStat stats {};
 
-    uint32_t last = g.size() + 1;
-    std::sort(g.begin(), g.end(), SimpleGraph::sortPairsFirst);
-    for(const auto &edge : g) {
-        if(edge.first != last) stats.noOut++;
-        last = edge.first;
+    uint32_t last = g->size() + 1;
+    std::sort(g->begin(), g->end(), SimpleGraph::sortPairsFirst);
+    for(uint32_t i = 0; i < g->size(); i ++) {
+        if(g->at(i).first != last) stats.noOut++;
+        last = g->at(i).first;
     }
 
-    last = g.size() + 1;
-    std::sort(g.begin(), g.end(), SimpleGraph::sortPairsSecond);
-    for(const auto &edge : g) {
-        if(edge.second != last) stats.noIn++;
-        last = edge.second;
+    last = g->size() + 1;
+    std::sort(g->begin(), g->end(), SimpleGraph::sortPairsSecond);
+    for(uint32_t i = 0; i < g->size(); i ++) {
+        if(g->at(i).second != last) stats.noIn++;
+        last = g->at(i).second;
     }
 
     uint32_t sum = 0;
-    std::sort(g.begin(), g.end(), SimpleGraph::sortPairsFirst);
+    std::sort(g->begin(), g->end(), SimpleGraph::sortPairsFirst);
 
     uint32_t prevFrom = 0;
     uint32_t prevTo = 0;
     bool first = true;
 
-    for (const auto &edge : g) {
-        if (first || !(prevFrom == edge.first && prevTo == edge.second)) {
+    for(uint32_t i = 0; i < g->size(); i ++) {
+        if (first || !(prevFrom == g->at(i).first && prevTo == g->at(i).second)) {
             first = false;
             sum ++;
-            prevFrom = edge.first;
-            prevTo = edge.second;
+            prevFrom = g->at(i).first;
+            prevTo = g->at(i).second;
         }
     }
 
@@ -64,35 +64,37 @@ cardStat SimpleEvaluator::computeStats(std::vector<std::pair> &g) {
     return stats;
 }
 
-std::vector<std::pair> SimpleEvaluator::project(uint32_t projectLabel, bool inverse, std::shared_ptr<SimpleGraph> &in) {
+std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::project(uint32_t projectLabel, bool inverse, std::shared_ptr<SimpleGraph> &in) {
 
-    std::vector<std::pair> out;
+    auto out = std::make_shared<std::vector<std::pair<uint32_t,uint32_t>>>();
 
     for (const auto &edge : in->adj[projectLabel]) {
         if(!inverse)
-            out.emplace_back(edge.first, edge.second);
+            out->emplace_back(edge.first, edge.second);
         else
-            out.emplace_back(edge.second, edge.first);
+            out->emplace_back(edge.second, edge.first);
     }
 
     return out;
 }
 
-std::vector<std::pair> SimpleEvaluator::join(std::vector<std::pair> &left, std::vector<std::pair> &right) {
+std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join(std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &left, std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &right) {
 
-    std::vector<std::pair> out;
-    std::sort(left.begin(), left.end(), SimpleGraph::sortPairsSecond);
-    std::sort(right.begin(), right.end(), SimpleGraph::sortPairsFirst);
+    auto out = std::make_shared<std::vector<std::pair<uint32_t,uint32_t>>>();
+
+    std::sort(left->begin(), left->end(), SimpleGraph::sortPairsSecond);
+    std::sort(right->begin(), right->end(), SimpleGraph::sortPairsFirst);
+
     uint32_t start = 0;
-    for(const auto &edge: left) {
-        for(auto i = start; i < right.size(); i ++) {
+    for(uint32_t i = 0; i < left->size(); i ++) {
+        for(uint32_t j = start; j < right->size(); j ++) {
 
-            if(edge.second > right[i].first)
+            if(left->at(i).second > right->at(j).first)
                 continue;
-            else if(edge.second == right[i].first)
-                out.emplace_back(edge.first, right[i].second);
+            else if(left->at(i).second == right->at(j).first)
+                out->emplace_back(left->at(i).first, right->at(j).second);
             else {
-                start = i;
+                start = j;
                 break;
             }
 
@@ -102,7 +104,7 @@ std::vector<std::pair> SimpleEvaluator::join(std::vector<std::pair> &left, std::
     return out;
 }
 
-std::vector<std::pair> SimpleEvaluator::evaluate_aux(RPQTree *q) {
+std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::evaluate_aux(RPQTree *q) {
 
     // evaluate according to the AST bottom-up
 
