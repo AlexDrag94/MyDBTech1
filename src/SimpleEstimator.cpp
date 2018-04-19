@@ -19,6 +19,7 @@ SimpleEstimator::SimpleEstimator(std::shared_ptr<SimpleGraph> &g){
 }
 
 void SimpleEstimator::prepare() {
+    uint32_t t = 1;
 //    numLabels = graph.get()->getNoLabels();
 //    labelData = new cardStat[numLabels];
 //
