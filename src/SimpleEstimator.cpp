@@ -1,3 +1,4 @@
+
 //
 // Created by Nikolay Yakovets on 2018-02-01.
 //
@@ -6,6 +7,7 @@
 #include "SimpleEstimator.h"
 
 uint32_t numLabels;
+uint32_t numVertices;
 cardStat* labelData;
 std::vector<std::pair<uint32_t, char>> queryVector;
 
@@ -19,48 +21,45 @@ SimpleEstimator::SimpleEstimator(std::shared_ptr<SimpleGraph> &g){
 }
 
 void SimpleEstimator::prepare() {
-
     numLabels = graph.get()->getNoLabels();
+    numVertices = graph.get()->getNoVertices();
     labelData = new cardStat[numLabels];
 
     uint32_t numIn;
     uint32_t numOut;
 
     for(auto i = 0; i < numLabels; i ++) {
-        if(graph.get()->adj[i].empty()) {
-            labelData[i] = {0, 0, 0};
-        }
-        else {
 
-            numIn = 0;
-            numOut = 0;
+        numIn = 0;
+        numOut = 0;
 
-            std::sort(graph.get()->adj[i].begin(), graph.get()->adj[i].end(), SimpleGraph::sortPairsFirst);
-            bool first = true;
-            for (auto j = 0; j < graph.get()->adj[i].size(); j++) {
-                if (first) {
-                    numOut++;
-                    first = false;
-                } else {
-                    if (graph.get()->adj[i][j].first != graph.get()->adj[i][j - 1].first)
-                        numOut++;
-                }
+        std::sort(graph.get()->adj[i].begin(), graph.get()->adj[i].end(), SimpleGraph::sortPairsFirst);
+        bool first = true;
+        for(auto j = 0; j < graph.get()->adj[i].size(); j ++) {
+            if(first) {
+                numOut ++;
+                first = false;
             }
-
-            std::sort(graph.get()->adj[i].begin(), graph.get()->adj[i].end(), SimpleGraph::sortPairsSecond);
-            first = true;
-            for (auto j = 0; j < graph.get()->adj[i].size(); j++) {
-                if (first) {
-                    numIn++;
-                    first = false;
-                } else {
-                    if (graph.get()->adj[i][j].second != graph.get()->adj[i][j - 1].second)
-                        numIn++;
-                }
+            else {
+                if(graph.get()->adj[i][j].first != graph.get()->adj[i][j-1].first)
+                    numOut ++;
             }
-
-            labelData[i] = {numOut, graph.get()->adj[i].size(), numIn};
         }
+
+        std::sort(graph.get()->adj[i].begin(), graph.get()->adj[i].end(), SimpleGraph::sortPairsSecond);
+        first = true;
+        for(auto j = 0; j < graph.get()->adj[i].size(); j ++) {
+            if(first) {
+                numIn ++;
+                first = false;
+            }
+            else {
+                if(graph.get()->adj[i][j].second != graph.get()->adj[i][j-1].second)
+                    numIn ++;
+            }
+        }
+
+        labelData[i] = {numOut, graph.get()->adj[i].size(), numIn};
     }
 }
 
@@ -74,7 +73,7 @@ void treeToList(RPQTree* q) {
         std::stringstream geek(label);
         uint32_t labelInt;
         geek >> labelInt;
-        queryVector.emplace_back(std::make_pair(labelInt, q->data.at(q->data.size() - 1)));
+        queryVector.push_back(std::make_pair(labelInt, q->data.at(q->data.size() - 1)));
     }
 }
 
@@ -83,9 +82,9 @@ cardStat reverse(cardStat c) {
 }
 
 cardStat SimpleEstimator::estimate(RPQTree *q) {
-       treeToList(q);
+    treeToList(q);
 
-    if(queryVector.empty())
+    if(queryVector.size()==0)
     {
         queryVector.clear();
         return cardStat{0,0,0};
@@ -106,7 +105,6 @@ cardStat SimpleEstimator::estimate(RPQTree *q) {
         else left = reverse(labelData[queryVector[0].first]);
 
         uint32_t total = (left.noIn + left.noOut) / 2;
-        uint32_t one = 1;
         for(int i=1; i<queryVector.size();i++)
         {
             cardStat right;
@@ -117,8 +115,8 @@ cardStat SimpleEstimator::estimate(RPQTree *q) {
             uint32_t in = (left.noIn)/ 4;
             uint32_t out = (right.noOut) / 4;
             total /= 4;
-            auto paths = std::min(2 * left.noPaths * right.noPaths / std::max((right.noIn + right.noOut + total), one),
-                                  2 * left.noPaths * right.noPaths / std::max((left.noOut + left.noIn + total), one));
+            auto paths = std::min(2 * left.noPaths * right.noPaths / (right.noIn + right.noOut + total),
+                                  2 * left.noPaths * right.noPaths / (left.noOut + left.noIn + total));
             cardStat processed = cardStat{std::min(out, paths), paths, std::min(in, paths)};
             left = processed;
         }
