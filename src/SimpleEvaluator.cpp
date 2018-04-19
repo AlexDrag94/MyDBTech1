@@ -67,6 +67,9 @@ cardStat SimpleEvaluator::computeStats(std::shared_ptr<std::vector<std::pair<uin
 std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::project(uint32_t projectLabel, bool inverse, std::shared_ptr<SimpleGraph> &in) {
 
     auto out = std::make_shared<std::vector<std::pair<uint32_t,uint32_t>>>();
+    if(in->adj.empty()) {
+        return out;
+    }
 
     for (const auto &edge : in->adj[projectLabel]) {
         if(!inverse)
@@ -81,6 +84,10 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::proj
 std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join(std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &left, std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &right) {
 
     auto out = std::make_shared<std::vector<std::pair<uint32_t,uint32_t>>>();
+
+    if(left->empty() || right->empty()) {
+        return out;
+    }
 
     std::sort(right->begin(), right->end(), SimpleGraph::sortPairsFirst);
     std::vector<uint32_t> pos;
@@ -97,7 +104,7 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join
 
     for(uint32_t i = 0; i < left->size(); i ++) {
         for(uint32_t j = pos[left->at(i).second]; j < right->size(); j ++) {
-            if(out->size() == 0) {
+            if(out->empty()) {
                 if(left->at(i).second == right->at(j).first)
                     out->emplace_back(left->at(i).first, right->at(j).second);
                 else break;
@@ -111,9 +118,10 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join
             }
         }
     }
-
-    std::sort(out->begin(), out->end());
-    out->erase( unique( out->begin(), out->end() ), out->end() );
+    if(!out->empty()) {
+        std::sort(out->begin(), out->end());
+        out->erase(unique(out->begin(), out->end()), out->end());
+    }
     return out;
 }
 
@@ -145,7 +153,7 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::eval
         return SimpleEvaluator::project(label, inverse, graph);
     }
 
-    if(q->isConcat()) {
+    else if(q->isConcat()) {
 
         // evaluate the children
         auto leftGraph = SimpleEvaluator::evaluate_aux(q->left);
