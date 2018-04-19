@@ -81,7 +81,7 @@ cardStat reverse(cardStat c) {
 }
 
 cardStat SimpleEstimator::estimate(RPQTree *q) {
-    treeToList(q);
+       treeToList(q);
 
     if(queryVector.size()==0)
     {
