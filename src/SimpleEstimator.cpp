@@ -29,36 +29,36 @@ void SimpleEstimator::prepare() {
 
     for(auto i = 0; i < numLabels; i ++) {
 
-        numIn = 0;
-        numOut = 0;
+//        numIn = 0;
+//        numOut = 0;
+//
+//        std::sort(graph.get()->adj[i].begin(), graph.get()->adj[i].end(), SimpleGraph::sortPairsFirst);
+//        bool first = true;
+//        for(auto j = 0; j < graph.get()->adj[i].size(); j ++) {
+//            if(first) {
+//                numOut ++;
+//                first = false;
+//            }
+//            else {
+//                if(graph.get()->adj[i][j].first != graph.get()->adj[i][j-1].first)
+//                    numOut ++;
+//            }
+//        }
+//
+//        std::sort(graph.get()->adj[i].begin(), graph.get()->adj[i].end(), SimpleGraph::sortPairsSecond);
+//        first = true;
+//        for(auto j = 0; j < graph.get()->adj[i].size(); j ++) {
+//            if(first) {
+//                numIn ++;
+//                first = false;
+//            }
+//            else {
+//                if(graph.get()->adj[i][j].second != graph.get()->adj[i][j-1].second)
+//                    numIn ++;
+//            }
+//        }
 
-        std::sort(graph.get()->adj[i].begin(), graph.get()->adj[i].end(), SimpleGraph::sortPairsFirst);
-        bool first = true;
-        for(auto j = 0; j < graph.get()->adj[i].size(); j ++) {
-            if(first) {
-                numOut ++;
-                first = false;
-            }
-            else {
-                if(graph.get()->adj[i][j].first != graph.get()->adj[i][j-1].first)
-                    numOut ++;
-            }
-        }
-
-        std::sort(graph.get()->adj[i].begin(), graph.get()->adj[i].end(), SimpleGraph::sortPairsSecond);
-        first = true;
-        for(auto j = 0; j < graph.get()->adj[i].size(); j ++) {
-            if(first) {
-                numIn ++;
-                first = false;
-            }
-            else {
-                if(graph.get()->adj[i][j].second != graph.get()->adj[i][j-1].second)
-                    numIn ++;
-            }
-        }
-
-        labelData[i] = {numOut, graph.get()->adj[i].size(), numIn};
+        labelData[i] = {graph.get()->adj[i].size()/2, graph.get()->adj[i].size(), graph.get()->adj[i].size()/2};
     }
 }
 
