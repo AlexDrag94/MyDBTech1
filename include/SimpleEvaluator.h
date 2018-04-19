@@ -32,8 +32,8 @@ public:
     static std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> project(uint32_t label, bool inverse, std::shared_ptr<SimpleGraph> &g);
     static std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> join(std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &left, std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &right);
 
-    std::vector<RPQTree*> getLeaves(RPQTree *query);
-    RPQTree* optimizeQuery(RPQTree *query);
+    std::vector<RPQTree*> find_leaves(RPQTree *query);
+    RPQTree* query_optimizer(RPQTree *query);
 
 
     static cardStat computeStats(std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &g);
