@@ -67,6 +67,7 @@ cardStat SimpleEvaluator::computeStats(std::shared_ptr<std::vector<std::pair<uin
 std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::project(uint32_t projectLabel, bool inverse, std::shared_ptr<SimpleGraph> &in) {
 
     auto out = std::make_shared<std::vector<std::pair<uint32_t,uint32_t>>>();
+    return out;
     if(in->adj.empty()) {
         return out;
     }
@@ -84,7 +85,7 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::proj
 std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join(std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &left, std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &right) {
 
     auto out = std::make_shared<std::vector<std::pair<uint32_t,uint32_t>>>();
-
+    return out;
     if(left->empty() || right->empty()) {
         return out;
     }
@@ -191,7 +192,7 @@ std::vector<RPQTree*> SimpleEvaluator::find_leaves(RPQTree *query) {
 
 RPQTree* SimpleEvaluator::query_optimizer(RPQTree *query) {
     std::vector<RPQTree*> ls = find_leaves(query);
-    //prepare();
+    prepare();
 
     while (ls.size() > 1) {
         RPQTree *best_plan = nullptr;
@@ -201,8 +202,7 @@ RPQTree* SimpleEvaluator::query_optimizer(RPQTree *query) {
         for (int i = 0; i < ls.size()-1; ++i) {
             std::string data("/");
             auto *c_plan = new RPQTree(data, ls[i], ls[i+1]);
-            //uint32_t c_result = est->estimate(c_plan).noPaths;
-            uint32_t c_result = 5;
+            uint32_t c_result = est->estimate(c_plan).noPaths;
             if (better_result == 0 || better_result > c_result) {
                 better_result = c_result;
                 best_plan = c_plan;
