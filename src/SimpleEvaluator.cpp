@@ -67,6 +67,7 @@ cardStat SimpleEvaluator::computeStats(std::shared_ptr<std::vector<std::pair<uin
 std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::project(uint32_t projectLabel, bool inverse, std::shared_ptr<SimpleGraph> &in) {
 
     auto out = std::make_shared<std::vector<std::pair<uint32_t,uint32_t>>>();
+    return out;
     if(in->adj.empty()) {
         return out;
     }
@@ -84,6 +85,7 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::proj
 std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join(std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &left, std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> &right) {
 
     auto out = std::make_shared<std::vector<std::pair<uint32_t,uint32_t>>>();
+    return out;
 
     if(left->empty() || right->empty()) {
         return out;
