@@ -72,7 +72,7 @@ void treeToList(RPQTree* q) {
         std::stringstream geek(label);
         uint32_t labelInt;
         geek >> labelInt;
-        queryVector.push_back(std::make_pair(labelInt, q->data.at(q->data.size() - 1)));
+        queryVector.emplace_back(std::make_pair(labelInt, q->data.at(q->data.size() - 1)));
     }
 }
 

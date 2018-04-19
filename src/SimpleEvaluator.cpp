@@ -169,12 +169,12 @@ std::vector<RPQTree*> SimpleEvaluator::find_leaves(RPQTree *query) {
     {
         if (query->right) {
             auto process = find_leaves(query->right);
-            final.insert(final.end(), process.begin(), process.end());
+            final.insert(final.begin(), process.begin(), process.end());
         }
         if (query->left)
         {
             auto process = find_leaves(query->left);
-            final.insert(final.end(), process.begin(), process.end());
+            final.insert(final.begin(), process.begin(), process.end());
         }
 
     }
@@ -183,6 +183,7 @@ std::vector<RPQTree*> SimpleEvaluator::find_leaves(RPQTree *query) {
 
 RPQTree* SimpleEvaluator::query_optimizer(RPQTree *query) {
     std::vector<RPQTree*> ls = find_leaves(query);
+    prepare();
 
     while (ls.size() > 1) {
         RPQTree *best_plan = nullptr;

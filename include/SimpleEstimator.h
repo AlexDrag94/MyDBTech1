@@ -15,7 +15,6 @@ class SimpleEstimator : public Estimator {
 public:
     explicit SimpleEstimator(std::shared_ptr<SimpleGraph> &g);
     ~SimpleEstimator() = default;
-
     void prepare() override ;
     cardStat estimate(RPQTree *q) override ;
 
