@@ -191,7 +191,7 @@ std::vector<RPQTree*> SimpleEvaluator::find_leaves(RPQTree *query) {
 
 RPQTree* SimpleEvaluator::query_optimizer(RPQTree *query) {
     std::vector<RPQTree*> ls = find_leaves(query);
-    prepare();
+    //prepare();
 
     while (ls.size() > 1) {
         RPQTree *best_plan = nullptr;
@@ -201,8 +201,8 @@ RPQTree* SimpleEvaluator::query_optimizer(RPQTree *query) {
         for (int i = 0; i < ls.size()-1; ++i) {
             std::string data("/");
             auto *c_plan = new RPQTree(data, ls[i], ls[i+1]);
-            uint32_t c_result = est->estimate(c_plan).noPaths;
-
+            //uint32_t c_result = est->estimate(c_plan).noPaths;
+            uint32_t c_result = 5;
             if (better_result == 0 || better_result > c_result) {
                 better_result = c_result;
                 best_plan = c_plan;
