@@ -175,13 +175,13 @@ int main(int argc, char *argv[]) {
 //    auto ev = std::make_unique<SimpleEvaluator>(g);
 //    ev->attachEstimator(est);
 //
-//    std::string str = "1+/13+/34+/2+/14+/6+";
+//    std::string str = "1+/34+/2+/14+";
 //    RPQTree* query = RPQTree::strToTree(str);
     //auto newQuery = ev->query_optimizer(query);
     //newQuery->print();
     //auto res = ev->evaluate_aux(newQuery);
 
-//    std::cout<<ev->evaluate(query).noPaths;
+    //std::cout<<ev->evaluate(query).noPaths;
 
 //    std::vector<RPQTree*> ls = ev->find_leaves(query);
 //    for(auto tree : ls) {
