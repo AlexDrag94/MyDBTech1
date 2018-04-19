@@ -175,8 +175,9 @@ int main(int argc, char *argv[]) {
 //    auto ev = std::make_unique<SimpleEvaluator>(g);
 //    ev->attachEstimator(est);
 //
-//    std::string str = "1+/34+/2+/14+";
+//    std::string str = "34+/35+";
 //    RPQTree* query = RPQTree::strToTree(str);
+    //est->prepare();
     //auto newQuery = ev->query_optimizer(query);
     //newQuery->print();
     //auto res = ev->evaluate_aux(newQuery);
