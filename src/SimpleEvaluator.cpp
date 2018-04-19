@@ -126,8 +126,6 @@ std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::join
 }
 
 std::shared_ptr<std::vector<std::pair<uint32_t,uint32_t>>> SimpleEvaluator::evaluate_aux(RPQTree *q) {
-    auto out = std::make_shared<std::vector<std::pair<uint32_t,uint32_t>>>();
-    return out;
 
     // evaluate according to the AST bottom-up
 
@@ -193,27 +191,27 @@ std::vector<RPQTree*> SimpleEvaluator::find_leaves(RPQTree *query) {
 
 RPQTree* SimpleEvaluator::query_optimizer(RPQTree *query) {
     std::vector<RPQTree*> ls = find_leaves(query);
-    prepare();
-
-    while (ls.size() > 1) {
-        RPQTree *best_plan = nullptr;
-        uint32_t better_result = 0;
-        int index = -1;
-
-        for (int i = 0; i < ls.size()-1; ++i) {
-            std::string data("/");
-            auto *c_plan = new RPQTree(data, ls[i], ls[i+1]);
-            uint32_t c_result = est->estimate(c_plan).noPaths;
-            if (better_result == 0 || better_result > c_result) {
-                better_result = c_result;
-                best_plan = c_plan;
-                index = i;
-            }
-        }
-
-        ls.erase(ls.begin() + index + 1);
-        ls[index] = best_plan;
-    }
+//    prepare();
+//
+//    while (ls.size() > 1) {
+//        RPQTree *best_plan = nullptr;
+//        uint32_t better_result = 0;
+//        int index = -1;
+//
+//        for (int i = 0; i < ls.size()-1; ++i) {
+//            std::string data("/");
+//            auto *c_plan = new RPQTree(data, ls[i], ls[i+1]);
+//            uint32_t c_result = est->estimate(c_plan).noPaths;
+//            if (better_result == 0 || better_result > c_result) {
+//                better_result = c_result;
+//                best_plan = c_plan;
+//                index = i;
+//            }
+//        }
+//
+//        ls.erase(ls.begin() + index + 1);
+//        ls[index] = best_plan;
+//    }
 
     return ls[0];
 
