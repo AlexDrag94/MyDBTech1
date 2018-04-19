@@ -170,27 +170,9 @@ int evaluatorBench(std::string &graphFile, std::string &queriesFile) {
 int main(int argc, char *argv[]) {
 
 //    auto g = std::make_shared<SimpleGraph>();
-//    g->readFromContiguousFile("C:\\Users\\Alex\\CLionProjects\\MyDBTech1\\graph.nt");
 //    auto est = std::make_shared<SimpleEstimator>(g);
 //    auto ev = std::make_unique<SimpleEvaluator>(g);
 //    ev->attachEstimator(est);
-//
-//    std::string str = "55+/5-";
-//    RPQTree* query = RPQTree::strToTree(str);
-    //est->prepare();
-    //auto newQuery = ev->query_optimizer(query);
-    //newQuery->print();
-    //auto res = ev->evaluate_aux(newQuery);
-
-   // std::cout<<ev->evaluate(query).noPaths;
-
-//    std::vector<RPQTree*> ls = ev->find_leaves(query);
-//    for(auto tree : ls) {
-//        tree->print();
-//    }
-
-
-
 //    g->setNoVertices(10);
 //    g->setNoLabels(10);
 //    g->addEdge(1, 2, 0);
